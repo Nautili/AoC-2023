@@ -52,33 +52,19 @@ def get_farthest_point(map):
 
     return longest_path, seen
 
-transition_map = {
-    'F': 'J',
-    'J': 'F',
-    'L': '7',
-    '7': 'L',
-}
-
-def count_inside(map, seen):
+def count_inside_diagonal(map, seen):
     inside_total = 0
-    for row_idx, row in enumerate(map):
+    for diagonal in range(len(map) + len(map[0]) - 2):
         is_inside = False
-        last_turn = None
-        for col_idx, val in enumerate(row):
-            if (row_idx, col_idx) in seen:
-                if val == "|":
+        for row in range(diagonal + 1):
+            col = diagonal - row
+            if (row, col) in seen:
+                if map[row][col] not in "FJ":
                     is_inside = not is_inside
-                elif val in transition_map.keys():
-                    if not last_turn:
-                        last_turn = val
-                    elif last_turn == transition_map[val]:
-                        is_inside = not is_inside
-                        last_turn = None
-                    else:
-                        last_turn = None
             elif is_inside:
                 inside_total += 1
     return inside_total
+
 
 def main():
     with open(sys.argv[1]) as f:
@@ -89,7 +75,7 @@ def main():
     print(longest_path)
 
     # part 2
-    print(count_inside(map, seen))
+    print(count_inside_diagonal(map, seen))
 
 if __name__ == '__main__':
     main()
