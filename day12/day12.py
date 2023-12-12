@@ -1,11 +1,10 @@
 import sys
 
-def get_arrangement_count(line, counts, memo = {}):
+def get_arrangement_count(line, counts, memo):
     if not line:
         return 0 if counts else 1
-    counts_string = ','.join(chr(c) for c in counts)
-    if (line, counts_string) in memo:
-        return memo[(line, counts_string)]
+    if (line, len(counts)) in memo:
+        return memo[(line, len(counts))]
     
     ret_counts = 0
     if line[0] in '.?':
@@ -18,7 +17,7 @@ def get_arrangement_count(line, counts, memo = {}):
            and (counts[0] >= len(line) or line[counts[0]] != '#'):
             ret_counts += get_arrangement_count(line[counts[0] + 1:], counts[1:], memo)
     
-    memo[(line, counts_string)] = ret_counts
+    memo[(line, len(counts))] = ret_counts
     return ret_counts
 
 def main():
@@ -30,11 +29,11 @@ def main():
     for line in lines:
         springs, counts = line.split()
         counts = [int(c) for c in counts.split(',')]
-        total_counts += get_arrangement_count(springs, counts)
+        total_counts += get_arrangement_count(springs, counts, {})
         
         expanded_springs = ((springs + '?') * 5)[:-1]
         expanded_counts = counts * 5
-        total_expanded_counts += get_arrangement_count(expanded_springs, expanded_counts)
+        total_expanded_counts += get_arrangement_count(expanded_springs, expanded_counts, {})
 
     print(total_counts)
     print(total_expanded_counts)
