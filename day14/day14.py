@@ -30,18 +30,14 @@ def rotate(grid):
     return new_grid
 
 def rotate_n_times(grid, n):
-    #pre-rotate east
-    for _ in range(3):
-        grid = rotate(grid)
-        
     seen_grids = {}
     found_cycle = False
     i = 0
     while i < n:
         # each cycle ends east
         for _ in range(4):
-            grid = rotate(grid)
             grid = roll_north(grid)
+            grid = rotate(grid)
 
         grid_str = ''.join(''.join(row) for row in grid)
         if not found_cycle and grid_str in seen_grids:
@@ -52,7 +48,7 @@ def rotate_n_times(grid, n):
             seen_grids[grid_str] = i
         i += 1
 
-    return rotate(grid)
+    return grid
     
 
 def main():
