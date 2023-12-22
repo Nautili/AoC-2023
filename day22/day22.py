@@ -8,10 +8,10 @@ class Node:
         self.next = []
 
 def over(t, b):
-    if t[0][0] > b[1][0] or b[0][0] > t[1][0] or \
-       t[0][1] > b[1][1] or b[0][1] > t[1][1]:
-        return False
-    return True
+    return t[0][0] <= b[1][0] \
+       and b[0][0] <= t[1][0] \
+       and t[0][1] <= b[1][1] \
+       and b[0][1] <= t[1][1]
 
 def build_dependency_graph(blocks):
     z_sorted_blocks = sorted(blocks, key = lambda block: (block[0][2], block[1][2]))
